@@ -12,7 +12,8 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const orders_module_1 = require("./orders/orders.module");
+const rooms_module_1 = require("./rooms/rooms.module");
+const screenings_module_1 = require("./screenings/screenings.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,17 +27,18 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: (configService) => ({
-                    type: 'postgres',
-                    host: configService.get('DB_HOST') ?? 'localhost',
-                    port: Number(configService.get('DB_PORT') ?? 5433),
-                    username: configService.get('DB_USERNAME') ?? 'postgres',
-                    password: configService.get('DB_PASSWORD') ?? 'postgres',
-                    database: configService.get('DB_DATABASE') ?? 'coffee_orders',
+                    type: "postgres",
+                    host: configService.get("DB_HOST") ?? "localhost",
+                    port: Number(configService.get("DB_PORT") ?? 5433),
+                    username: configService.get("DB_USERNAME") ?? "postgres",
+                    password: configService.get("DB_PASSWORD") ?? "postgres",
+                    database: configService.get("DB_DATABASE") ?? "room_screenings",
                     autoLoadEntities: true,
                     synchronize: true,
                 }),
             }),
-            orders_module_1.OrdersModule,
+            rooms_module_1.RoomsModule,
+            screenings_module_1.ScreeningsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

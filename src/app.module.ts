@@ -1,8 +1,11 @@
+// app.module.ts
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { RoomsModule } from "./rooms/rooms.module";
+import { ScreeningsModule } from "./screenings/screenings.module";
 
 @Module({
   imports: [
@@ -18,13 +21,15 @@ import { AppService } from "./app.service";
         port: Number(configService.get<string>("DB_PORT") ?? 5433),
         username: configService.get<string>("DB_USERNAME") ?? "postgres",
         password: configService.get<string>("DB_PASSWORD") ?? "postgres",
-        database: configService.get<string>("DB_DATABASE") ?? "coffee_orders",
+        database: configService.get<string>("DB_DATABASE") ?? "room_screenings",
         autoLoadEntities: true,
         synchronize: true,
       }),
     }),
+    RoomsModule, 
+    ScreeningsModule, 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController], 
+  providers: [AppService], 
 })
 export class AppModule {}
