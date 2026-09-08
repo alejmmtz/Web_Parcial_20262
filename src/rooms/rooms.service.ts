@@ -1,5 +1,5 @@
 import {
-  BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
@@ -21,7 +21,7 @@ export class RoomsService {
         where: { name: createRoomDTO.name },
       })
     ) {
-      throw new BadRequestException(`The room's name already exists `);
+      throw new ConflictException(`The room's name already exists `);
     }
 
     if (createRoomDTO.capacity < 1) {

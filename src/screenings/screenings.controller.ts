@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -17,6 +18,24 @@ export class ScreeningsController {
 
   @Post()
   createScreening(@Body() createScreeningDTO: CreateScreeningDTO) {
+    if (
+      !createScreeningDTO.movieTitle ||
+      !createScreeningDTO.roomId ||
+      !createScreeningDTO.startsAt
+    ) {
+      throw new BadRequestException(
+        `The petition doesn't have all the required values`,
+      );
+    }
+
+    /*
+    if (!(createScreeningDTO.startsAt instanceof Date)) {
+      throw new BadRequestException(
+        `Invalid Date Format, ${createScreeningDTO.startsAt}`,
+      );
+    }
+      */
+
     return this.screeningsService.createScreening(createScreeningDTO);
   }
 
@@ -35,10 +54,28 @@ export class ScreeningsController {
     @Param("id") id: string,
     @Body() updateScreeningDTO: UpdateScreeningDTO,
   ) {
+    if (
+      !updateScreeningDTO.movieTitle &&
+      !updateScreeningDTO.status &&
+      !updateScreeningDTO.startsAt
+    ) {
+      throw new BadRequestException(
+        `The petition doesn't have any of the required values`,
+      );
+    }
+
+    if (
+      updateScreeningDTO.status !== "cancelled" &&
+      updateScreeningDTO.status !== "scheduled"
+    ) {
+      throw new BadRequestException(
+        `The status: ${updateScreeningDTO.status} doesn't exist`,
+      );
+    }
     return this.screeningsService.updateById(Number(id), updateScreeningDTO);
   }
 
-  @Delete(":status")
+  @Delete("/cancelled")
   remove() {
     return this.screeningsService.removeByStatus();
   }

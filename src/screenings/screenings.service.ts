@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ScreeningEntity } from "./screenings.entity";
 import { Repository } from "typeorm";
@@ -20,12 +24,12 @@ export class ScreeningsService {
     createScreeningDTO: CreateScreeningDTO,
   ): Promise<ScreeningEntity> {
     const room = await this.roomsRepository.findOneBy({
-      id: createScreeningDTO.room_id,
+      id: createScreeningDTO.roomId,
     });
 
     if (!room) {
       throw new NotFoundException(
-        `Customer with id ${createScreeningDTO.room_id} was not found`,
+        `Customer with id ${createScreeningDTO.roomId} was not found`,
       );
     }
 
@@ -76,11 +80,15 @@ export class ScreeningsService {
     return this.screeningsRepository.save(screening);
   }
 
-  async removeByStatus(): Promise<ScreeningEntity[]> {
+  async removeByStatus(): Promise<string> {
     const screening = await this.screeningsRepository.findBy({
       status: "cancelled",
     });
 
-    return this.screeningsRepository.remove(screening);
+    this.screeningsRepository.remove(screening);
+
+    const deleted = " deleted: " + screening.length;
+
+    return deleted;
   }
 }
