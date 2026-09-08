@@ -25,5 +25,5 @@ export class ScreeningEntity {
     nullable: false,
   })
   @JoinColumn({ name: "room_id" })
-  room = RoomEntity;
+  room!: RoomEntity;
 }

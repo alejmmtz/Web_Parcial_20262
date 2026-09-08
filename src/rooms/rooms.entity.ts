@@ -13,5 +13,5 @@ export class RoomEntity {
   capacity!: number;
 
   @OneToMany(() => ScreeningEntity, (screening) => screening.room)
-  screenings = ScreeningEntity;
+  screenings!: ScreeningEntity[];
 }

@@ -1,4 +1,5 @@
-export class CreateRoomDTO {
+export class CreateScreeningDTO {
   movieTitle!: string;
-  room_id!: string;
+  startsAt!: Date;
+  room_id!: number;
 }

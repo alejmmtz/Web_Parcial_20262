@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { RoomEntity } from "./rooms.entity";
 import { Repository } from "typeorm";
@@ -12,6 +16,14 @@ export class RoomsService {
   ) {}
 
   async createRoom(createRoomDTO: CreateRoomDTO): Promise<RoomEntity> {
+    if (
+      await this.roomsRepository.findOne({
+        where: { name: createRoomDTO.name },
+      })
+    ) {
+      throw new BadRequestException(`The room's name already exists `);
+    }
+
     if (createRoomDTO.capacity < 1) {
       throw new NotFoundException(
         `The room's capacity cannot be less than or 0 `,
